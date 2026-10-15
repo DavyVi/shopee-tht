@@ -1,0 +1,44 @@
+name: Build and publish receipt app
+
+on:
+  push:
+    branches: [main]
+    paths: ["coding-test-5/**", ".github/workflows/docker.yml"]
+  workflow_dispatch:          # add manual trigger for testing
+
+permissions:
+  contents: read
+  packages: write             # needed to push to GitHub Container Registry
+
+env:
+  IMAGE: ghcr.io/${{ github.repository_owner }}/receipt-app
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build image
+        run: docker build -t receipt-app ./coding-test-5
+
+      - name: Smoke test - container starts and Streamlit responds
+        run: |
+          docker run -d --name app -p 8501:8501 -e GEMINI_API_KEY=dummy receipt-app
+          for i in $(seq 1 30); do
+            curl -sf http://localhost:8501/_stcore/health && exit 0
+            sleep 2
+          done
+          docker logs app
+          exit 1
+
+      - name: Log in to GitHub Container Registry
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+      - name: Tag and push
+        run: |
+          OWNER_IMAGE=$(echo "$IMAGE" | tr '[:upper:]' '[:lower:]')
+          docker tag receipt-app $OWNER_IMAGE:latest
+          docker tag receipt-app $OWNER_IMAGE:${{ github.sha }}
+          docker push $OWNER_IMAGE:latest
+          docker push $OWNER_IMAGE:${{ github.sha }}
