@@ -27,3 +27,7 @@ Engineering Knowledge AI Agent Test
     Here I will assume that finetune LLM model from raw means fine tuning an existing LLM / pretrained model for our specific task or use case.
 
     First we will need to make a dataset for the LLM on the specific task that we want to do. Like some relevant example and what the expected behaviour / response of the LLM model. Then we can tokenize the example and fit in the dataset into the model. After the model retraining is completed, we can do a evaluation by comparing the non-tuned version of the LLM vs the tuned version against a evaluation set. If the result have satisfied the requirements, we can save the weights then redeploy the LLM model. 
+
+
+Coding Test Result Video Recording can be found here : 
+https://drive.google.com/drive/folders/1qy78-eaydBq2lIrep1YPYfKyvtXW_DjQ?usp=sharing
