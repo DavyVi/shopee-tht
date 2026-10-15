@@ -14,9 +14,3 @@ psutil==6.1.1
 # Qdrant client for vector search
 qdrant-client==1.19.1
 pywin32==311
-
-# Requirements for coding test 5
-streamlit
-python-dotenv
-google-genai
-pydantic
