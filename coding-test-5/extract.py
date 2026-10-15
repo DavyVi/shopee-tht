@@ -2,6 +2,7 @@ import base64
 from typing import List, Optional
 from pydantic import BaseModel, Field
 from gemini_client import client, MODEL
+from datetime import date
 
 class Item(BaseModel):
     name: str = Field(description="Food or drink item name")
@@ -16,9 +17,12 @@ class Receipt(BaseModel):
     fees: float = Field(description="Sum of all non-item charges: delivery, service, packaging, tax. 0 if none")
     
 PROMPT = (
+    f"Today's date is {date.today().isoformat()}. "
     "Extract the purchase details from this food order receipt. "
-    "Return the date as YYYY-MM-DD. Prices are plain numbers "
-    "(e.g. 'Rp 55.000' -> 55000). If a field is not visible, use null."
+    "Return the date as YYYY-MM-DD; two-digit years like '26' mean 20YY. "
+    "Prices are plain numbers (e.g. 'Rp 55.000' -> 55000). If a field is not visible, use null."
+    "Put delivery, service, packaging and tax charges in 'fees'. "
+    "Put all discounts, promos and vouchers (lines shown with a minus sign) in 'discounts' as a positive number. "
 )
 
 def extract_receipt(image_bytes: bytes, mime_type: str) -> Receipt:

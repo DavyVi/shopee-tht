@@ -20,6 +20,7 @@ def init_db():
             purchase_date TEXT,   -- 'YYYY-MM-DD'
             total         REAL,
             fees          REAL,
+            discounts     REAL DEFAULT 0,
             image_path    TEXT,
             uploaded_at   TEXT DEFAULT CURRENT_TIMESTAMP
         );
