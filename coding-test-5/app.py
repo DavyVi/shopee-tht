@@ -24,8 +24,8 @@ if uploaded is not None:
         
         #handles the case where the sum of items + fees does not equal the total
         items_sum = sum(i.price for i in receipt.items)
-        if abs(items_sum + receipt.fees - receipt.total) > 1:
-            st.warning(f"Check this receipt: items {items_sum:,.0f} + fees {receipt.fees:,.0f} ≠ total {receipt.total:,.0f}")
+        if abs(items_sum + receipt.fees - receipt.discounts - receipt.total) > 1:
+            st.warning(f"Check this receipt: items {items_sum:,.0f} + fees {receipt.fees:,.0f} - discounts {receipt.discounts:,.0f} ≠ total {receipt.total:,.0f}")
             
         image_path = save_image(image_bytes, uploaded.name)
         receipt_id = save_receipt(receipt.model_dump(), image_path)
