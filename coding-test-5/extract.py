@@ -15,6 +15,7 @@ class Receipt(BaseModel):
     total: float = Field(description="Final total paid, as a plain number")
     items: List[Item]
     fees: float = Field(description="Sum of all non-item charges: delivery, service, packaging, tax. 0 if none")
+    discounts: float = Field(description="Sum of all discounts, promos, vouchers. 0 if none")
     
 PROMPT = (
     f"Today's date is {date.today().isoformat()}. "
