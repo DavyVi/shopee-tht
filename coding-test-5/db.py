@@ -46,9 +46,9 @@ def save_receipt(data, image_path):
 
         # 1. One row for the receipt
         cur.execute(
-            """INSERT INTO receipts (store, purchase_date, total, fees, image_path)
-               VALUES (?, ?, ?, ?, ?)""",
-            (data["store"], data["purchase_date"], data["total"], data["fees"], image_path),
+            """INSERT INTO receipts (store, purchase_date, total, fees, discounts, image_path)
+               VALUES (?, ?, ?, ?, ?, ?)""",
+            (data["store"], data["purchase_date"], data["total"], data["fees"], data["discounts"], image_path),
         )
         receipt_id = cur.lastrowid   # the ID SQLite just generated
 
